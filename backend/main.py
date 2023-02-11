@@ -47,7 +47,6 @@ def accept_input():
     bucket = storage_client.bucket(app.config['BUCKET_URL'])
     blob = bucket.blob(filename)
     blob.upload_from_file(file_obj=file,  rewind=True)
-    
     return filename
 
 if __name__ == '__main__':
