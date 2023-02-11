@@ -33,12 +33,20 @@ def accept_input_test():
 
 @app.route('/pipeline', methods=['GET', 'POST'])
 def accept_input():
+
+    '''
+    client = storage.Client()
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(object_name)
+    blob.upload_from_string(image_data)
+    '''
+
     file = request.files["image"]
+    filename = file.filename
     storage_client = storage.Client()
     bucket = storage_client.bucket(app.config['BUCKET_URL'])
-    filename = file.filename
     blob = bucket.blob(filename)
-    blob.upload_from_filename(filename)
+    blob.upload_from_file(file_obj=file,  rewind=True)
     
     return filename
 
