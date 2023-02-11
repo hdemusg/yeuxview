@@ -26,5 +26,8 @@ class IrisNet(nn.Module):
 
 
 iNet = IrisNet(250, 250)
-# xOut = iNet.forward(x)
-print(iNet.model)
+xOut = iNet.forward(x)
+criterion = nn.MultiLabelSoftMarginLoss()
+mLoss = criterion(xOut)
+
+# print(iNet.model)
