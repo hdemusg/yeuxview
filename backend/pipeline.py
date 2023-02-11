@@ -22,5 +22,4 @@ def classify(image):
     "predictions": preds_classes
     })
     '''
-    
     pass
