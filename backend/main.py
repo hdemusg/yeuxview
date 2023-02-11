@@ -20,7 +20,7 @@ def root():
     # This will be replaced with real information in later steps.
     my_img = {'image': open("fmicon.jpg", 'rb')}
     r = requests.post('http://127.0.0.1:8081/pipeline', files=my_img)
-    filename=os.path.join(app.config['UPLOAD_FOLDER'], ' ', r.text)
+    filename=os.path.join(app.config['UPLOAD_FOLDER'], r.text)
     return render_template('index.html', image=filename)
 
 @app.route('/pipeline-test', methods=['GET', 'POST'])
@@ -40,7 +40,7 @@ def accept_input():
     blob = bucket.blob(filename)
     blob.upload_from_filename(filename)
     
-    return 'saved successfully'
+    return filename
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
