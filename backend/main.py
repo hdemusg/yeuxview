@@ -4,6 +4,7 @@ from io import BytesIO
 import requests
 import os
 from google.cloud import storage
+from pipeline import *
 
 app = Flask(__name__)
 
@@ -47,6 +48,8 @@ def accept_input():
     bucket = storage_client.bucket(app.config['BUCKET_URL'])
     blob = bucket.blob(filename)
     blob.upload_from_file(file_obj=file,  rewind=True)
+    image = fetch(filename, bucket, filename)
+    classify(image)
     return filename
 
 if __name__ == '__main__':
