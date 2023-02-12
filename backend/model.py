@@ -132,7 +132,6 @@ for i in range(len(left_image_list)):
 # print(len(img_list_combined))
 # print(img_list_combined[0:4])
 
-
 ground_truth = []
 for id in leftTest:
     val = df[df['ID'] == id]['target']

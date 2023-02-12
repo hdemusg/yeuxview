@@ -60,8 +60,9 @@ def accept_input():
     blob_r = bucket.blob(filename_r)
     blob_l.upload_from_file(file_obj=file_l,  rewind=True)
     blob_r.upload_from_file(file_obj=file_r,  rewind=True)
-    #image = fetch(filename, bucket, filename)
-    #classify(image)
+    image_l = fetch(filename_l, bucket, filename_l)
+    image_r = fetch(filename_r, bucket, filename_r)
+    classify(image_l, image_r)
     return filename_l
 
 if __name__ == '__main__':

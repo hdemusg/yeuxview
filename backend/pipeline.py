@@ -8,7 +8,7 @@ def fetch(filename, bucket, blobname):
     im = Image.open(bytes)
     return im
 
-def classify(image):
+def classify(image_l, image_r):
     '''
     print("/predict request")
     req_json = request.get_json()
