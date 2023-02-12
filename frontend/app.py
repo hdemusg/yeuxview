@@ -1,7 +1,6 @@
 # Imports
 
 import smtplib
-import streamlit as st
 import requests
 import streamlit as st
 from io import StringIO
@@ -10,10 +9,9 @@ import openai
 from twilio.rest import Client
 import time
 import random
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
 from os.path import join, dirname
 from dotenv import load_dotenv
+import pandas as pd
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -52,10 +50,10 @@ def save_uploadedfile(uploadedfile, A, B):
      return st.success("Saved File:{} to tempDir".format(uploadedfile.name))
 
 
-def gpt_treatment(prompt):
+def gpt_treatment(ld, rd):
     response = openai.Completion.create(
         model="text-davinci-002",
-        prompt=f"You are a medical advisor and eye-doctor. The patient is suffering from an eye disease called {prompt}. Recommend possible treatments and precautions they must take. Respond in less than 100 words.",
+        prompt=f"You are a medical advisor and eye-doctor. The patient has just gone an eye analysis and their test results have indicated {ld} in the left eye, and {rd} in the right eye. Recommend possible treatments and precautions they must take for each eye. Respond in less than 100 words.",
         temperature=0.7,
         max_tokens=200
     )
@@ -68,8 +66,8 @@ st.title("Welcome To YeuxView! :eye:")
 st.info("Early Eye-Disease Diagnosis and Preventive Care")
 
 st.info("Upload an iris scan to process.")
-right_uploaded_file = st.file_uploader("Right Eye", type=['png', 'jpg'])
 left_uploaded_file = st.file_uploader("Left Eye", type=['png', 'jpg'])
+right_uploaded_file = st.file_uploader("Right Eye", type=['png', 'jpg'])
 
 gender = st.radio("What's your gender?", ('Male', 'Female'))
 age = st.slider('How old are you?', 0, 100, 0)
@@ -93,8 +91,6 @@ if (st.button("Process!")):
         images = {
             'right_image': open(A + "image" + B + "." + right_uploaded_file.type[6:], 'rb'),
             'left_image': open(C + "image" + D + "." + left_uploaded_file.type[6:], 'rb'),
-            'age': (None, age),
-            'gender': (None, gender),
         }
 
         st.title("Your Information: ")
@@ -107,30 +103,60 @@ if (st.button("Process!")):
         if(phone_no != 1000000000):
             st.subheader("Phone Number: " + str(phone_no))
 
-
-        st.image([A + "image" + B + "." + right_uploaded_file.type[6:], C + "image" + D + "." + left_uploaded_file.type[6:]], width=350)
-
         with st.spinner('Processing Your Data.'):
             st.title("Your Results: ")
             
-            # url = "https://yeuxview-backend-dot-yeuxview.uk.r.appspot.com/pipeline"            
-            # r = requests.post(url, files=images)
+            url = "https://002f-2610-148-1f00-4000-3cbf-cc26-bae5-952c.ngrok.io/pipeline"            
+            r = requests.post(url, files=images)
 
-            # st.title("Possible Treatments")
-            # treatment = gpt_treatment("High Myopia")
-            # st.write(treatment)
+            image1data = r.json()['image1']
+            image2data = r.json()['image2']
 
-            # if(phone_no != 1000000000):
-            #     send_sms(phone_no, "Your YeuxView reports are in!\n" + "Here's the prescribed treatment:\n" + treatment)
-            # if(email != ""):
-            #     send_email(treatment, email)
+            preds1 = [0, 1, 2, 3, 4, 5, 6, 7]
+            preds2 = [0, 1, 2, 3, 4, 5, 6, 7]
+            probs1 = [image1data['probs'][0], image1data['probs'][1], image1data['probs'][2], image1data['probs'][3], image1data['probs'][4], image1data['probs'][5], image1data['probs'][6]]
+            probs2 = [image2data['probs'][0], image2data['probs'][1], image2data['probs'][2], image2data['probs'][3], image2data['probs'][4], image2data['probs'][5], image2data['probs'][6]]
+
+            disease_names = {
+            0: 'Normal',
+            1: 'Diabetes',
+            2: 'Glaucoma',
+            3: 'Cataract',
+            4: 'Age related muscular degeneration',
+            5: 'Hypertension',
+            6: 'Pathological myopia',
+            7: 'Other diseases'
+            }
+
+            data1 = list(zip(preds1, probs1))
+            data1.sort(key=lambda x: x[1], reverse=True)
+            data2 = list(zip(preds2, probs2))
+            data2.sort(key=lambda x: x[1], reverse=True)
+
+            sorted_preds1, sorted_probs1 = zip(*data1)
+            sorted_preds2, sorted_probs2 = zip(*data2)
+
+            df1 = pd.DataFrame({'Disease': [disease_names[p] for p in sorted_preds1], 'Probability': sorted_probs1})
+            df2 = pd.DataFrame({'Disease': [disease_names[p] for p in sorted_preds2], 'Probability': sorted_probs2})
+
+            disease_index1 = probs1.index(max(probs1))
+            disease_name1 = disease_names[disease_index1]
+            st.subheader(f"Left Eye Diagnosis: {disease_name1}")
+            st.bar_chart(df1, x='Disease', y='Probability')
+
+            disease_index2 = probs2.index(max(probs2))
+            disease_name2 = disease_names[disease_index2]
+            st.subheader(f"Right Eye Diagnosis: {disease_name2}")
+            st.bar_chart(df2, x='Disease', y='Probability')
+
+            st.title("Possible Treatments")
+            treatment = gpt_treatment(disease_name1, disease_name2)
+            st.write(treatment)
+
+            if(phone_no != 1000000000):
+                send_sms(phone_no, "Your YeuxView reports are in!\n" + "Here's the prescribed treatment:\n" + treatment)
+            if(email != ""):
+                send_email(treatment, email)
 
     else:
         st.warning("Please enter the required information!")
-
-
-
-
-
-
-
