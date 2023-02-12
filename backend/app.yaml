@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-runtime: python39
-service: yeuxview-backend
+runtime: python37
+service: yeuxview
+env: flex
+
+runtime_config:
+  python_version: 3.7
 
 handlers:
   # This configures Google App Engine to serve the files in the app's static
