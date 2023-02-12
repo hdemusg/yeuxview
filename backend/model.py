@@ -139,6 +139,14 @@ for id in leftTest:
     # print(val.values)
     left_val = val.values[1]
     right_val = val.values[0]
+    left_val = left_val.replace("[", "")
+    left_val = left_val.replace("]", "")
+    left_val = left_val.strip().split(",")
+    left_val = [int(x) for x in left_val]
+    right_val = right_val.replace("[", "")
+    right_val = right_val.replace("]", "")
+    right_val = right_val.strip().split(",")
+    right_val = [int(x) for x in right_val]
     # print(left_val)
     # print(right_val)
     ground_truth.append((left_val, right_val))
@@ -167,6 +175,8 @@ new_Y_train = []
 for j in range(len(y_train)):
     t1 = y_train[j][0]
     t2 = y_train[j][1]
+    # print(t1)
+    # print(t2)
     Y1 = torch.as_tensor(t1)
     Y2 = torch.as_tensor(t2)
     new_Y_train.append([Y1, Y2])
