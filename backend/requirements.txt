@@ -1,3 +1,8 @@
 Flask==2.1.0
 Pillow==9.4.0
 google-cloud-storage==2.7.0
+fastai
+https://files.pythonhosted.org/packages/e0/c7/1c91a71b413c82cd4c49fb8b6676f6135650cd2cca2745a96bd84a56166c/ipython-7.19.0-py3-none-any.whl
+torch
+torchvision
+-f https://download.pytorch.org/whl/torch_stable.html
