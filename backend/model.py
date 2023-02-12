@@ -168,8 +168,8 @@ new_X_train = []
 for i in range(len(X_train)):
     img1 = X_train[i][1]
     img2 = X_train[i][2]
-    X1 = tensor_conversion(img1)
-    X2 = tensor_conversion(img2)
+    X1 = tensor_conversion(img1).numpy()
+    X2 = tensor_conversion(img2).numpy()
     new_X_train.append([X1, X2])
 new_Y_train = []
 for j in range(len(y_train)):
@@ -177,11 +177,11 @@ for j in range(len(y_train)):
     t2 = y_train[j][1]
     # print(t1)
     # print(t2)
-    Y1 = torch.as_tensor(t1)
-    Y2 = torch.as_tensor(t2)
+    Y1 = np.array(t1)
+    Y2 = np.array(t2)
     new_Y_train.append([Y1, Y2])
-new_X_train = torch.as_tensor(new_X_train)
-new_Y_train = torch.as_tensor(new_Y_train)
+new_X_train = torch.as_tensor(np.array(new_X_train))
+new_Y_train = torch.as_tensor(np.array(new_Y_train))
 for epoch in range(iNet.epochs):
     xOut = iNet.forward(new_X_train)
     criterion = nn.MultiLabelSoftMarginLoss()
