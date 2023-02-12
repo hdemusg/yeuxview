@@ -8,7 +8,7 @@ According to the World Health Organization (WHO), vision impairment or blindness
 
 ## What it does
 
-Our hackathon project, yeuxview, aims to provide an easy and accessible way for people to detect eye diseases in their early stages. Our solution uses cutting-edge technology, including the Google Cloud Platform, to provide a seamless user experience. The user simply uploads their eye scans, and our machine learning model will classify the image as healthy or diseased. If the image is classified as diseased, the user will receive an SMS and email notification with the results. The user can also view the results on the frontend of our solution.
+Our hackathon project, Yeuxview, aims to provide an easy and accessible way for people to detect eye diseases in their early stages. Our solution uses cutting-edge technology, including the Google Cloud Platform, to provide a seamless user experience. The user simply uploads their eye scans, and our machine learning model will classify the image as healthy or diseased. If the image is classified as diseased, the user will receive an SMS and email notification with the results. The user can also view the results on the frontend of our solution.
 
 ## How we built it
 
@@ -35,9 +35,9 @@ We used GPT-3 to generate personalized treatment options based on the patient's 
 
 ## Challenges we ran into
 
-Determining what architecture to use for the model. We had to choose between a CNN and a ResNet. We chose ResNet because it was more accurate and faster than CNN.
+We faced challenges determining what architecture to use for the model. We had to experiment with different architectures and hyperparameters to find the best model for our solution, but it soon proved that transfer learning on a pre-trained resnet34 model was the best approach, as it was both fast and accurate.
 
-We did not realize we could not effectively use user-taken images of their eyes to train the model or perform predictions. This caused us to pivot from a solution that involved a user taking a picture of their eye and having a model perform segmentation on that image to a solution that involved a user uploading an image of their eye scans. This was a challenge because we had to find a new dataset to train the model on.
+We also did not realize we could not effectively use user-taken images of their eyes to train the model or perform predictions. This caused us to pivot from a solution that involved a user taking a picture of their eye and having a model perform segmentation on that image then performing classification, to a solution that involved a user uploading an image of their eye scans. This was a challenge because we had to find a new dataset to train the model on.
 
 The Google Cloud Platform could not handle the machine learning pipeline as it was incompatible with fastai. We used ngrok for the demo. 
 
@@ -47,7 +47,7 @@ Finally, we had to fine-tune the model's hyperparameters to achieve the best per
 
 ## Accomplishments that we're proud of
 
-We are proud of several accomplishments that we achieved with our hackathon project, Eye Disease Detection with Machine Learning. Here are a few highlights:
+We are proud of several accomplishments that we achieved with our hackathon project, Yeuxview. Here are a few highlights:
 
 Building a machine learning model that accurately classifies eye images as healthy or diseased. Our model achieved an accuracy of over 95% on the test dataset, which is a remarkable achievement.
 
@@ -58,5 +58,10 @@ Integrating Twilio into our solution to provide users with SMS and email notific
 Building a robust and scalable backend that can handle a large volume of requests. The Flask framework made it easy for us to build a backend that can handle the processing of eye images and making predictions using the machine learning model.
 
 ## What we learned
+
+We learned a lot during this hackathon. Here are a few highlights:
+- We learned how to use the Google Cloud Platform to host our solution and store images uploaded by the users.
+- We learned how to use the Streamlit framework to build a beautiful and interactive frontend.
+- We learned much about computer vision and machine learning, including how to build a machine learning model using PyTorch and fastai.
 
 ## What's next for Untitled
