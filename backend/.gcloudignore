@@ -12,6 +12,7 @@
 # below:
 .git
 .gitignore
+image_files/
 
 # Python pycache:
 __pycache__/

@@ -45,7 +45,6 @@ for fname in fileList:
 # fileList.sort()
 # print(fileList)
 '''
-
 image_list = []
 for fname in fileList:
     impath = os.path.join(image_dir, fname)
