@@ -20,8 +20,6 @@ def root():
     images = {
         'right_image': open('0_right.jpg', 'rb'),
         'left_image': open('0_left.jpg', 'rb'),
-        'age': "23",
-        'gender': 'Male',
     }
     # For the sake of example, use static information to inflate the template.
     # This will be replaced with real information in later steps.
@@ -49,8 +47,6 @@ def accept_input():
     '''
     file_r = request.files["right_image"]
     file_l = request.files["left_image"]
-    gender = request.files["gender"]
-    age = request.files["age"]
     print(file_l, file_r)
     filename_r = file_r.filename
     filename_l = file_l.filename
